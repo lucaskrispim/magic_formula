@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row my-3 mt-3">
+  <div class="col-8">
+    <form method="POST" action="{% url 'index'%}" autocomplete="off">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-4">
+          <select class="form-control" id="mySelect" onchange="myFunction()" name="setor">
+            <option selected="selected" value="zero">Escolha um setor</option>
+            {% for sector in sectors %}
+            <option value="{{sector.setor}}">{{sector.setor}}</option>
+            {% empty %}
+            <option>Setor vazio</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-3">
+          <input type="number" class="form-control" placeholder="Quantidade" min="1" max="20" name="quantidade">
+        </div>
+        <div class="col-1">
+          <button type="submit" class="btn btn-block btn-primary">Selecionar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-4">
+    <a href="{% url 'refreshcompanies' %}" class="btn btn-warning">Atualizar empresas</a>
+  </div>
+</div>
+<div class="table-responsive">
+  <table class="table table-striped table-bordered border rounded">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Setor</th>
+        <th>Sigla</th>
+        <th>Posição</th>
+        <th>EV/EBIT</th>
+        <th>ROIC</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {% for company in companies %}
+      <tr>
+        <td>{{ company.nome }}</td>
+        <td>{{ company.setor }}</td>
+        <td>{{ company.sigla }}</td>
+        <td>{{ company.posicao }}</td>
+        <td>{{ company.ev }}</td>
+        <td>{{ company.roic }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan=4 class="text-center">
+          Não Há empresas para serem listadas
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% block custom_js %}
+<script>
+  function myFunction() {
+    var x = document.getElementById("mySelect");
+    if (x[0].value == "zero") {
+      x.remove(0);
+    }
+
+  }
+</script>
+{% endblock %}
+
+
+{% endblock %}
