@@ -4,7 +4,6 @@ from ..utils.company import setor
 from ..models import Company
 
 def getCompany(setor="zero",n=10):
-  print(setor," ",n)
   try:
     agent = {"User-Agent":"Mozilla/5.0"}
     res = requests.get('https://fundamentus.com.br/resultado.php', headers=agent)
