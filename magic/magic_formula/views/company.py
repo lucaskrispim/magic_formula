@@ -1,11 +1,14 @@
 from django.shortcuts import render,redirect
 from ..controllers.company_controller import getCompany,storeAllCompanies
 from ..forms import CompanySelecaoForm
+from ..utils import indicators
 
 # Create your views here.
 def index(request):
   if request.method == 'GET':
     companies,sectors = getCompany()
+
+    companies = indicators(companies)
 
     context = {
       'sectors': sectors,
@@ -27,6 +30,8 @@ def index(request):
     else:
       companies,sectors = getCompany()
       
+    companies = indicators(companies)
+    
     context = {
       'sectors': sectors,
       'companies': companies
@@ -36,6 +41,7 @@ def index(request):
 
 
 def refreshcompanies(request):
+  
   response = storeAllCompanies()
 
   return redirect('index')

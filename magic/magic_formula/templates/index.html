@@ -17,7 +17,8 @@
           </select>
         </div>
         <div class="col-3">
-          <input type="number" class="form-control" placeholder="Quantidade" min="1" max="20" name="quantidade">
+          <input type="number" class="form-control" placeholder="Quantidade" min="1" max="30" name="quantidade"
+            value="">
         </div>
         <div class="col-1">
           <button type="submit" class="btn btn-block btn-primary">Selecionar</button>
@@ -29,37 +30,109 @@
     <a href="{% url 'refreshcompanies' %}" class="btn btn-warning">Atualizar empresas</a>
   </div>
 </div>
-<div class="table-responsive">
+
+<div class="table-responsive my-2 mt-2 mr-1">
   <table class="table table-striped table-bordered border rounded">
     <thead>
       <tr>
-        <th>Nome</th>
-        <th>Setor</th>
-        <th>Sigla</th>
-        <th>Posição</th>
-        <th>EV/EBIT</th>
-        <th>ROIC</th>
-
+        <th class="col-3">Nome</th>
+        <th class="col-2">Setor</th>
+        <th class="col-1">Sigla</th>
+        <th class="col-1">Posição</th>
+        <th class="col-1">EV/EBIT</th>
+        <th class="col-1">ROIC</th>
+        <th class="col-1">RSI</th>
+        <th class="col-1">ADX</th>
+        <th class="col-1">Hilo</th>
       </tr>
     </thead>
+  </table>
+</div>
+
+
+<div class="table-responsive my-2 mt-2" style="height: calc(100vh - 300px); scrollbar-width: none; overflow-y: scroll; ">
+  <table class="table table-striped table-bordered border rounded">
     <tbody>
       {% for company in companies %}
-      <tr>
-        <td>{{ company.nome }}</td>
-        <td>{{ company.setor }}</td>
-        <td>{{ company.sigla }}</td>
-        <td>{{ company.posicao }}</td>
-        <td>{{ company.ev }}</td>
-        <td>{{ company.roic }}</td>
+      {%if company.rsi > 70 %}
+      <tr class="bg-primary">
+        <td class="col-3">{{ company.nome }}</td>
+        <td class="col-2">{{ company.setor }}</td>
+        <td class="col-1">{{ company.sigla }}</td>
+        <td class="col-1">{{ company.posicao }}</td>
+        <td class="col-1">{{ company.ev }}</td>
+        <td class="col-1">{{ company.roic }}</td>
+        <td class="col-1">{{ company.rsi }}</td>
+        <td class="col-1">{{ company.adx }}</td>
+        {% if company.hilo == 1 %}
+        <td class=" col-1 text-center">&uarr;</td>
+        {% else %}
+        {% if company.hilo == 0 %}
+        <td class=" col-1 text-center">&#x268A;</td>
+        {% else %}
+        <td class=" col-1 text-center">&#8595;</td>
+        {% endif %}
+        {% endif %}
       </tr>
-      {% empty %}
-      <tr>
-        <td colspan=4 class="text-center">
-          Não Há empresas para serem listadas
-        </td>
-      </tr>
-      {% endfor %}
+      {% else %}
+      {%if company.rsi < 30 %} <tr class="bg-danger">
+        <td class="col-3">{{ company.nome }}</td>
+        <td class="col-2">{{ company.setor }}</td>
+        <td class="col-1">{{ company.sigla }}</td>
+        <td class="col-1">{{ company.posicao }}</td>
+        <td class="col-1">{{ company.ev }}</td>
+        <td class="col-1">{{ company.roic }}</td>
+        <td class="col-1">{{ company.rsi }}</td>
+        <td class="col-1">{{ company.adx }}</td>
+
+        {% if company.hilo == 1 %}
+        <td class="col-1 text-center">&uarr;</td>
+        {% else %}
+        {% if company.hilo == 0 %}
+        <td class="col-1 text-center">&#x268A;</td>
+        {% else %}
+        <td class="col-1 text-center">&#8595;</td>
+        {% endif %}
+        {% endif %}
+
+
+        </tr>
+        {% else %}
+        <tr>
+          <td class="col-3">{{ company.nome }}</td>
+          <td class="col-2">{{ company.setor }}</td>
+          <td class="col-1">{{ company.sigla }}</td>
+          <td class="col-1">{{ company.posicao }}</td>
+          <td class="col-1">{{ company.ev }}</td>
+          <td class="col-1">{{ company.roic }}</td>
+          <td class="col-1">{{ company.rsi }}</td>
+          <td class="col-1">{{ company.adx }}</td>
+
+          {% if company.hilo == 1 %}
+          <td class="col-1 text-center">&uarr;</td>
+          {% else %}
+          {% if company.hilo == 0 %}
+          <td class="col-1 text-center">&#x268A;</td>
+          {% else %}
+          <td class="col-1 text-center">&#8595;</td>
+          {% endif %}
+          {% endif %}
+
+
+        </tr>
+
+        {% endif %}
+        {% endif %}
+
+        {% empty %}
+        <tr>
+          <td colspan=4 class="text-center">
+            Não Há empresas para serem listadas
+          </td>
+        </tr>
+        {% endfor %}
     </tbody>
+
   </table>
 </div>
 
